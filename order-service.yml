@@ -1,13 +1,13 @@
 spring:
   kafka:
-    kafka-server: localhost:9092
+    # pod 실행 중인 service 이름으로 변경 (localhost X)
+    kafka-server: kafka-service:9092
 
-# # Feign + Circuit Breaker 활성화
+# Feign + CircuitBreaker 트랜젝션 처리
 feign:
   circuitbreaker:
     enabled: true
 
-# # Feign + Circuit Breaker 트랜젝션 처리
 resilience4j:
   circuitbreaker:
     instances:

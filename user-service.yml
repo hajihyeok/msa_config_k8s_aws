@@ -1,2 +1,11 @@
+spring:
+  data:
+    redis:
+      # pod 실행 중인 redis-service의 이름으로 변경
+      host: redis-service # redis_deployment.yml의 service 이름과 일치해야 한다.
+      port: 6379
+      password: 
+      timeout: 6000ms
+
 jwt:
   secret: jslim-super-secret-key-for-jwt-123456789

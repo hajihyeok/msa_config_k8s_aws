@@ -1,6 +1,7 @@
 spring:
   kafka:
-    kafka-server: localhost:9092
+    # pod 실행 중인 service 이름으로 변경 (localhost X)
+    kafka-server: kafka-service:9092
     consumer:
       group-id: product-group
       auto-offset-reset: earliest

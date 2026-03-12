@@ -7,6 +7,10 @@ server:
 
 # Spring Boot 설정
 spring:
+  # 애플리케이션 설정
+  application:
+    name: api-gateway # 이름
+
   # Eureka Cloud 설정
   cloud:
     # gateway 설정
@@ -30,7 +34,8 @@ spring:
         - Path=/user-service/**
         filters:                # 필터 적용
         - StripPrefix=1         # 첫번째 접두어를 제거 (http://server.hajihyeok.com/user-service/... -> http://server.hajihyeok.com/...)
-        uri: lb://user-service  # 라우팅 대상 (Eureka 서비스 이름과 동일하게 설정)
+        # lb : localhost,  http : k8s pod
+        uri: http://user-service
 
       # product service 라우팅
       - id: product-service
@@ -38,7 +43,8 @@ spring:
         - Path=/product-service/**
         filters:
         - StripPrefix=1
-        uri: lb://product-service
+        # lb : localhost,  http : k8s pod
+        uri: http://product-service
 
       # order service 라우팅
       - id: order-service
@@ -46,18 +52,10 @@ spring:
         - Path=/order-service/**
         filters:
         - StripPrefix=1
-        uri: lb://order-service
+        # lb : localhost,  http : k8s pod
+        uri: http://order-service
 
 
 # JWT 설정
 jwt:
   secret: jslim-super-secret-key-for-jwt-123456789  # JWT 서명 비밀키
-
-
-# Eureka 설정
-eureka:
-  # Client 설정
-  client:
-    # Eureka Server 엔드포인트 설정
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/  # Eureka Server 주소
