@@ -3,6 +3,16 @@ eureka:
     enabled: false
 
 spring:
+  rabbitmq:
+    host: rabbitmq-service
+    port: 5672
+    username: guest
+    password: guest
+
+  cloud:
+    bus:
+    enabled: true
+
   # mariadb settings
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
