@@ -1,0 +1,63 @@
+# API Gateway 애플리케이션 설정 파일 (YAML 형식)
+
+# Server 설정
+server:
+  port: 8888  # 포트 번호 (http://localhost:8888)
+
+
+# Spring Boot 설정
+spring:
+  # Eureka Cloud 설정
+  cloud:
+    # gateway 설정
+    gateway:
+      # 전역 CORS(보안) 설정
+      globalcors:
+        cors-configurations:  # 상세 규칙 설정
+          '[/**]':  # 이하 모든 경로에 대해 허용
+            allowed-origins:          # 프론트엔드 애플리케이션 주소 허용 (예시)
+            - 'http://localhost:3000' 
+            allowed-methods: '*'      # 모든 HTTP 메서드 허용 (GET, POST, PUT, DELETE 등)
+            allowed-headers: '*'      # 모든 헤더 허용
+            exposed-headers: '*'      # 클라이언트에게 모든 헤더 노출 허용
+            allow-credentials: true   # 자격 증명 포함 요청 허용 (쿠키, 인증 정보 등)
+
+      # 라우팅 설정
+      routes:
+      # user service 라우팅
+      - id: user-service        # 라우팅 ID (고유 식별자)
+        predicates:             # 라우팅 적용 조건 (경로)
+        - Path=/user-service/**
+        filters:                # 필터 적용
+        - StripPrefix=1         # 첫번째 접두어를 제거 (http://server.hajihyeok.com/user-service/... -> http://server.hajihyeok.com/...)
+        uri: lb://user-service  # 라우팅 대상 (Eureka 서비스 이름과 동일하게 설정)
+
+      # product service 라우팅
+      - id: product-service
+        predicates:
+        - Path=/product-service/**
+        filters:
+        - StripPrefix=1
+        uri: lb://product-service
+
+      # order service 라우팅
+      - id: order-service
+        predicates:
+        - Path=/order-service/**
+        filters:
+        - StripPrefix=1
+        uri: lb://order-service
+
+
+# JWT 설정
+jwt:
+  secret: jslim-super-secret-key-for-jwt-123456789  # JWT 서명 비밀키
+
+
+# Eureka 설정
+eureka:
+  # Client 설정
+  client:
+    # Eureka Server 엔드포인트 설정
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/  # Eureka Server 주소
